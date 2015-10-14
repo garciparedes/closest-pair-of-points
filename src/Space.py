@@ -15,7 +15,8 @@ class Space():
 
 
 
-    def __init__(self, points):
+    def __init__(self, dimension, points):
+        self.dimension = dimension
         self.points = points
 
 
@@ -30,7 +31,22 @@ class Space():
             for j in range(dimension):
                 vec.append(randint(0,size-1))
             listPoints.append( Point(vec))
-        return Space(listPoints)
+        return Space(dimension, listPoints)
+
+
+
+    @staticmethod
+    def printPoints(points):
+        result = ''
+
+        for i in points:
+            result += str(i) + '\n'
+        return result
+
+
+
+    def getDimension(self):
+        return self.dimension
 
 
 
@@ -88,3 +104,18 @@ class Space():
                     closestPair[1] = self.getPoint(j)
 
         return closestPair
+
+
+
+    def getClosestDivideConquer(self):
+
+        self.divide(self.points, 0)
+
+        return None
+
+    def divide(self, p, i):
+        if (len(p) > 2):
+            p.sort(key=lambda point: point.vector[i%self.getDimension()])
+            print self.printPoints(p)
+            self.divide(p[:len(p)/2],i+1)
+            self.divide(p[len(p)/2:],i+1)
