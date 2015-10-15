@@ -139,18 +139,19 @@ class Space():
 
 
     def divide(self, p, i):
-        i = i%self.getDimension()
+
+        i = (i+1)%self.getDimension()
 
         if (len(p) > 5):
             p.sort(key=lambda point: point.vector[i])
             #print self.printPoints(p)
-            closestPairL = self.divide(p[len(p)/2:],i+1)
-            closestPairR = self.divide(p[:len(p)/2],i+1)
+            closestPairL = self.divide(p[len(p)/2:],i)
+            closestPairR = self.divide(p[:len(p)/2],i)
 
             closestPair = self.menor(closestPairL, closestPairR)
 
 
-            closestPairM = self.conquer(p,closestPair, i+1)
+            closestPairM = self.conquer(p,closestPair, i)
 
             if(closestPairM != None):
                 closestPair = self.menor(closestPair, closestPairM)
@@ -162,8 +163,6 @@ class Space():
 
 
     def conquer(self, p, closestPair, i):
-        i = i%self.getDimension()
-
 
         distance = math.ceil(closestPair[0].distance(closestPair[1]))
 
@@ -172,13 +171,14 @@ class Space():
         izquierda = p[:len(p)/2]
         derecha = p[len(p)/2:]
 
-        centro = p[len(p)/2]
+        finIzquierda = izquierda[-1]
+        inicioDerecha = derecha[0]
 
 
         for j in derecha:
             #print distance
             #print ( p[len(p)/2:][-1].vector[i]- j.vector[i])
-            if (distance > abs(centro.vector[i] - j.vector[i])):
+            if (distance > abs(finIzquierda.vector[i] - j.vector[i])):
                 listaFinal.append(j)
             else:
                 break
@@ -186,13 +186,13 @@ class Space():
         for j in reversed(izquierda):
             #print distance
             #print (j.vector[i] - p[:len(p)/2][0].vector[i])
-            if (distance > abs(centro.vector[i] - j.vector[i])):
+            if (distance > abs(inicioDerecha.vector[i] - j.vector[i])):
                 listaFinal.append(j)
             else:
                 break
 
         if (len(listaFinal) >= 2):
-            return  self.divide(listaFinal, i+1)
+            return  self.divide(listaFinal, i)
             #return None
         else:
             return None
