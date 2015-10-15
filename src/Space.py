@@ -43,6 +43,12 @@ class Space():
             result += str(i) + '\n'
         return result
 
+    @staticmethod
+    def menor(pair1, pair2):
+        if (pair1[0].distance(pair1[1]) < pair2[0].distance(pair2[1])):
+            return pair1
+        else:
+            return pair2
 
 
     def getDimension(self):
@@ -107,15 +113,41 @@ class Space():
 
 
 
+    def getClosestBrutePlus(self, p):
+        closestPair = [p[0], p[1]]
+
+        for i in xrange(0,len(p)):
+            for j in xrange(0, i):
+                if ((i != j)
+                    and (p[i].distance(p[j])
+                    < closestPair[0].distance(closestPair[1]))):
+
+                    closestPair[0] = p[i]
+                    closestPair[1] = p[j]
+
+        return closestPair
+
+
+
     def getClosestDivideConquer(self):
 
-        self.divide(self.points, 0)
+        closestPair = self.divide(self.points, 0)
 
-        return None
+        return closestPair
+
+
 
     def divide(self, p, i):
-        if (len(p) > 2):
-            p.sort(key=lambda point: point.vector[i%self.getDimension()])
-            print self.printPoints(p)
-            self.divide(p[:len(p)/2],i+1)
-            self.divide(p[len(p)/2:],i+1)
+        i = i%self.getDimension()
+
+        if (len(p) > 5):
+            p.sort(key=lambda point: point.vector[i])
+            #print self.printPoints(p)
+            closestPairL = self.divide(p[:len(p)/2],i+1)
+            closestPairR = self.divide(p[len(p)/2:],i+1)
+
+            closestPair = self.menor(closestPairL, closestPairR)
+        else:
+            closestPair = self.getClosestBrutePlus(p)
+
+        return closestPair
