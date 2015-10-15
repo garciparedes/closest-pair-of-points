@@ -19,25 +19,26 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def main():
 
-    space = Space.generateSpace(1000,3,10**(-5))
+    for i in range(0,10):
+        space = Space.generateSpace(1000,3,10**(-6))
 
 
-    print space
-    space.getClosestDivideConquer()
+        #print space
 
-    fig = pylab.figure()
-    ax = Axes3D(fig)
-
-
-    for i in space.points:
-        ax.scatter(i.vector[0], i.vector[1], i.vector[2])
+        fig = pylab.figure()
+        ax = Axes3D(fig)
 
 
-    #pyplot.show()
-    #closestPairBrute(space)
-    #closestPairBrutePlus(space)
-    closestPairDivide(space)
+        for i in space.points:
+            ax.scatter(i.vector[0], i.vector[1], i.vector[2])
 
+
+        #pyplot.show()
+        #closestPairBrute(space)
+        #closestPairBrutePlus(space)
+        closestPairBrutePlus(space)
+        closestPairDivide(space)
+        print "\n\n\n"
 
 
 def closestPairBrute(space):
