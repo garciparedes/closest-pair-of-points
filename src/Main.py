@@ -19,7 +19,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def main():
 
-    for i in range(0,10):
+    for i in range(0,100):
         space = Space.generateSpace(1000,3,10**(-6))
 
 

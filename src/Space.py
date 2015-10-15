@@ -150,7 +150,7 @@ class Space():
             closestPair = self.menor(closestPairL, closestPairR)
 
 
-            closestPairM = self.conquer(p,closestPair, i)
+            closestPairM = self.conquer(p,closestPair, i+1)
 
             if(closestPairM != None):
                 closestPair = self.menor(closestPair, closestPairM)
