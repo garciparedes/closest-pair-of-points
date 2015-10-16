@@ -20,7 +20,7 @@ from mpl_toolkits.mplot3d import Axes3D
 def main():
 
     for i in range(0,100):
-        space = Space.generateSpace(1000,3,10**(-6))
+        space = Space.generateSpace(10000,7,10**(-25))
 
 
         #print space
@@ -29,7 +29,7 @@ def main():
         ax = Axes3D(fig)
 
 
-        for i in space.points:
+        for i in space.pointList:
             ax.scatter(i.vector[0], i.vector[1], i.vector[2])
 
 
@@ -55,7 +55,7 @@ def closestPairBrute(space):
 
 def closestPairBrutePlus(space):
     time1 = time.time()
-    lista = space.getClosestBrutePlus(space.points)
+    lista = space.getClosestBrutePlus(space.pointList)
     time2 = time.time()
 
     print 'function took %0.3f s' % ( (time2-time1))

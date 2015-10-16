@@ -16,9 +16,9 @@ class Space():
 
 
 
-    def __init__(self, dimension, points):
+    def __init__(self, dimension, pointList):
         self.dimension = dimension
-        self.points = points
+        self.pointList = pointList
 
 
 
@@ -37,15 +37,15 @@ class Space():
 
 
     @staticmethod
-    def printPoints(points):
+    def printPoints(pointList):
         result = ''
 
-        for i in points:
+        for i in pointList:
             result += str(i) + '\n'
         return result
 
     @staticmethod
-    def menor(pair1, pair2):
+    def min(pair1, pair2):
         if (pair1[0].distance(pair1[1]) < pair2[0].distance(pair2[1])):
             return pair1
         else:
@@ -58,19 +58,19 @@ class Space():
 
 
     def getPoint(self, n):
-        return self.points[n]
+        return self.pointList[n]
 
 
 
     def getNumPoints(self):
-        return len(self.points)
+        return len(self.pointList)
 
 
 
     def __str__(self):
         result = ''
 
-        for i in self.points:
+        for i in self.pointList:
             result += str(i) + '\n'
 
         result += "Hay %s puntos. \n" % (self.getNumPoints())
@@ -78,16 +78,11 @@ class Space():
 
 
 
-    def getClosestPair(self):
-        return self.getClosestBrutePlus()
-
-
-
     def getClosestBrute(self):
         closestPair = [self.getPoint(0), self.getPoint(1)]
 
-        for i in self.points:
-            for j in self.points:
+        for i in self.pointList:
+            for j in self.pointList:
                 if ((i != j)
                     and (i.distance(j) < closestPair[0].distance(closestPair[1]))):
 
@@ -101,7 +96,7 @@ class Space():
     def getClosestBrutePlus(self):
         closestPair = [self.getPoint(0), self.getPoint(1)]
 
-        for i in xrange(0,len(self.points)):
+        for i in xrange(0,len(self.pointList)):
             for j in xrange(0, i):
                 if ((i != j)
                     and (self.getPoint(i).distance(self.getPoint(j))
@@ -114,17 +109,17 @@ class Space():
 
 
 
-    def getClosestBrutePlus(self, p):
-        closestPair = [p[0], p[1]]
+    def getClosestBrutePlus(self, initPointList):
+        closestPair = [initPointList[0], initPointList[1]]
 
-        for i in xrange(0,len(p)):
+        for i in xrange(0,len(initPointList)):
             for j in xrange(0, i):
                 if ((i != j)
-                    and (p[i].distance(p[j])
+                    and (initPointList[i].distance(initPointList[j])
                     < closestPair[0].distance(closestPair[1]))):
 
-                    closestPair[0] = p[i]
-                    closestPair[1] = p[j]
+                    closestPair[0] = initPointList[i]
+                    closestPair[1] = initPointList[j]
 
         return closestPair
 
@@ -132,73 +127,64 @@ class Space():
 
     def getClosestDivideConquer(self):
 
-        closestPair = self.divide(self.points, 0)
+        closestPair = self.divide(self.pointList, 0)
 
         return closestPair
 
 
 
-    def divide(self, p, i):
+    def divide(self, initPointList, i):
 
         i = (i+1) % self.getDimension()
 
-        if (len(p) > 5):
-            p.sort(key=lambda point: point.vector[i])
+        if (len(initPointList) > 10):
+            initPointList.sort(key=lambda point: point.vector[i])
 
-            closestPairL = self.divide(p[len(p)/2:],i)
-            closestPairR = self.divide(p[:len(p)/2],i)
+            leftClosestPair = self.divide(initPointList[len(initPointList)/2:],i)
+            rightClosestPair = self.divide(initPointList[:len(initPointList)/2],i)
 
-            closestPair = self.menor(closestPairL, closestPairR)
+            closestPair = self.min(leftClosestPair, rightClosestPair)
 
-
-            closestPairM = self.conquer(p,closestPair, i)
+            closestPairM = self.conquer(initPointList,closestPair, i)
 
             if(closestPairM != None):
-                closestPair = self.menor(closestPair, closestPairM)
+                closestPair = self.min(closestPair, closestPairM)
 
         else:
-            closestPair = self.getClosestBrutePlus(p)
+            closestPair = self.getClosestBrutePlus(initPointList)
 
         return closestPair
 
 
-    def conquer(self, p, closestPair, i):
 
+    def conquer(self, initPointList, closestPair, i):
         distance = math.ceil(closestPair[0].distance(closestPair[1]))
 
-        listaFinal = list()
+        finalPointList = list()
+        leftPointList = initPointList[:len(initPointList)/2]
+        rightPointList = initPointList[len(initPointList)/2:]
 
-        izquierda = p[:len(p)/2]
-        derecha = p[len(p)/2:]
+        leftBorderPoint = leftPointList[-1]
+        rightBorderPoint = rightPointList[0]
 
-        finIzquierda = izquierda[-1]
-        inicioDerecha = derecha[0]
-
-        for j in derecha:
-            if (distance > abs(finIzquierda.vector[i] - j.vector[i])):
-                listaFinal.append(j)
+        for j in rightPointList:
+            if (distance > abs(leftBorderPoint.vector[i] - j.vector[i])):
+                finalPointList.append(j)
             else:
                 break
 
-        cont = 0
-        for j in reversed(izquierda):
-            #print "distancia= %s , %s, %s" % (distance, cont, len(derecha))
-            #cont += 1
-            #print abs(inicioDerecha.vector[i] - j.vector[i])
-            if (distance > abs(inicioDerecha.vector[i] - j.vector[i])):
-                listaFinal.append(j)
+        for j in reversed(leftPointList):
+            if (distance > abs(rightBorderPoint.vector[i] - j.vector[i])):
+                finalPointList.append(j)
             else:
                 break
 
-        if (len(listaFinal) > 2):
-            #print "ListaFinal: %s ListaOriginal: %s " % (len(listaFinal), len(p))
-            if (len(listaFinal) >= len(p)):
-                print "Peligro! "
-                return self.getClosestBrutePlus(p)
+        if (len(finalPointList) > 2):
+            if (len(finalPointList) >= len(initPointList)):
+                return self.getClosestBrutePlus(initPointList)
             else:
-
-                return  self.divide(listaFinal, i)
-        elif(len(listaFinal) == 2):
-            return listaFinal
+                return  self.divide(finalPointList, i)
+        elif(len(finalPointList) == 2):
+            return finalPointList
         else:
             return None
