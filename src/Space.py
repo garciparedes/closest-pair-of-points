@@ -140,11 +140,11 @@ class Space():
 
     def divide(self, p, i):
 
-        i = (i+1)%self.getDimension()
+        i = (i+1) % self.getDimension()
 
         if (len(p) > 5):
             p.sort(key=lambda point: point.vector[i])
-            #print self.printPoints(p)
+
             closestPairL = self.divide(p[len(p)/2:],i)
             closestPairR = self.divide(p[:len(p)/2],i)
 
@@ -174,25 +174,31 @@ class Space():
         finIzquierda = izquierda[-1]
         inicioDerecha = derecha[0]
 
-
         for j in derecha:
-            #print distance
-            #print ( p[len(p)/2:][-1].vector[i]- j.vector[i])
             if (distance > abs(finIzquierda.vector[i] - j.vector[i])):
                 listaFinal.append(j)
             else:
                 break
 
+        cont = 0
         for j in reversed(izquierda):
-            #print distance
-            #print (j.vector[i] - p[:len(p)/2][0].vector[i])
+            #print "distancia= %s , %s, %s" % (distance, cont, len(derecha))
+            #cont += 1
+            #print abs(inicioDerecha.vector[i] - j.vector[i])
             if (distance > abs(inicioDerecha.vector[i] - j.vector[i])):
                 listaFinal.append(j)
             else:
                 break
 
-        if (len(listaFinal) >= 2):
-            return  self.divide(listaFinal, i)
-            #return None
+        if (len(listaFinal) > 2):
+            #print "ListaFinal: %s ListaOriginal: %s " % (len(listaFinal), len(p))
+            if (len(listaFinal) >= len(p)):
+                print "Peligro! "
+                return self.getClosestBrutePlus(p)
+            else:
+
+                return  self.divide(listaFinal, i)
+        elif(len(listaFinal) == 2):
+            return listaFinal
         else:
             return None
