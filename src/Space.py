@@ -7,6 +7,7 @@ Author: Sergio Garcia Prado
 
 
 from Point import Point
+from PairPoint import PairPoint
 from random import randint
 import math
 
@@ -73,7 +74,7 @@ class Space(object):
         Devuelve el minimo de los dos
         parametros.
         '''
-        if (pair1[0].distance(pair1[1]) < pair2[0].distance(pair2[1])):
+        if (pair1.distance() < pair2.distance()):
             return pair1
         else:
             return pair2
@@ -140,7 +141,7 @@ class Space(object):
         Solucion por fuerza bruta que compara todos los puntos
         con todos y asi obtiene los dos mas cercanos
         '''
-        closestPair = [self.getPoint(0), self.getPoint(1)]
+        closestPair = [self.pointList[0], self.pointList[1]]
 
         for i in self.pointList:
             for j in self.pointList:
@@ -165,15 +166,14 @@ class Space(object):
 
         if not initPointList: initPointList = self.pointList
 
-        closestPair = [initPointList[0], initPointList[1]]
+        closestPair = PairPoint(initPointList[0], initPointList[1])
 
         for i in range(0,len(initPointList)):
             for j in range(0, i):
                 if (initPointList[i].distance(initPointList[j])
-                    < closestPair[0].distance(closestPair[1])):
+                    < closestPair.distance()):
 
-                    closestPair[0] = initPointList[i]
-                    closestPair[1] = initPointList[j]
+                    closestPair.set(initPointList[i], initPointList[j])
 
         return closestPair
 
@@ -222,7 +222,8 @@ class Space(object):
 
 
     def conquer(self, initPointList, closestPair, i):
-        distance = math.ceil(closestPair[0].distance(closestPair[1]))
+
+        distance = math.ceil(closestPair.distance())
 
         finalPointList = list()
         leftPointList = initPointList[:len(initPointList)/2]
@@ -243,12 +244,11 @@ class Space(object):
             else:
                 break
 
-        if (len(finalPointList) > 2):
+        if (len(finalPointList) >= 2):
             if (len(finalPointList) >= len(initPointList)):
                 return self.getClosestBrutePlus(initPointList)
             else:
                 return  self.divide(finalPointList, i)
-        elif(len(finalPointList) == 2):
-            return finalPointList
+
         else:
             return None

@@ -34,8 +34,7 @@ def main():
 
 
         #pyplot.show()
-        #closestPairBrute(space)
-        #closestPairBrutePlus(space)
+        closestPairBrute(space)
         closestPairBrutePlus(space)
         closestPairDivide(space)
         print "\n\n\n"
@@ -59,9 +58,7 @@ def closestPairBrutePlus(space):
     time2 = time.time()
 
     print 'function took %0.3f s' % ( (time2-time1))
-    print lista[0]
-    print lista[1]
-    print lista[0].distance(lista[1])
+    print lista
 
 def closestPairDivide(space):
     time1 = time.time()
@@ -69,9 +66,7 @@ def closestPairDivide(space):
     time2 = time.time()
 
     print 'function took %0.3f s' % ( (time2-time1))
-    print lista[0]
-    print lista[1]
-    print lista[0].distance(lista[1])
+    print lista
 
 
 if __name__ == "__main__":
