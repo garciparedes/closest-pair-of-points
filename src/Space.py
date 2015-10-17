@@ -12,18 +12,43 @@ import math
 
 
 
-class Space():
+class Space(object):
+    """ Clase Espacio.
+
+    Esta clase modeliza el espacio donde estan contenidos los puntos en el sistema
+
+    Attributes:
+        dimension: dimension del espacio.
+        pointList: conjunto de puntos del espacio.
+    """
 
 
 
-    def __init__(self, dimension, pointList):
+    def __init__(self, dimension, pointList = {}):
+        '''
+        Inicializa la clase.
+
+        Descarta los puntos con dimension distinta a la fijada en self.dimension
+        '''
+
         self.dimension = dimension
+
+        for i in pointList:
+            if (i.dimension() != self.dimension):
+                pointList.remove(i)
+
         self.pointList = pointList
 
 
 
     @staticmethod
     def generateSpace(size, dimension, density):
+        ''''
+        Metodo estatico.
+
+        Es el encargado de generar un espacio aleatoriamente
+        a partir de los parametros introducidos.
+        '''
         boxes = size**dimension
         points = int(boxes * density)
         listPoints = list()
@@ -32,59 +57,95 @@ class Space():
             for j in range(dimension):
                 vec.append(randint(0,size-1))
             listPoints.append( Point(vec))
+        vec = list()
+        for j in range(dimension+1):
+            vec.append(randint(0,size-1))
+        listPoints.append( Point(vec))
         return Space(dimension, listPoints)
 
 
 
     @staticmethod
-    def printPoints(pointList):
-        result = ''
-
-        for i in pointList:
-            result += str(i) + '\n'
-        return result
-
-    @staticmethod
     def min(pair1, pair2):
+        '''
+        Metodo Estatico.
+
+        Devuelve el minimo de los dos
+        parametros.
+        '''
         if (pair1[0].distance(pair1[1]) < pair2[0].distance(pair2[1])):
             return pair1
         else:
             return pair2
 
 
-    def getDimension(self):
-        return self.dimension
+
+    def pointsToString(self, pointList = None):
+        '''
+        Metodo que devuelve el conjunto de puntos
+        en formato string.
+
+        Toma el atributo pointList como valor por defecto.
+        '''
+
+        if not pointList: pointList = self.pointList
+
+        result = ''
+
+        for i in pointList:
+            result += str(i) + '\n'
+        return result
 
 
 
-    def getPoint(self, n):
-        return self.pointList[n]
-
-
-
-    def getNumPoints(self):
+    def pointListSize(self):
+        '''
+        Devuelve el numero de puntos
+        que hay en el espacio.
+        '''
         return len(self.pointList)
 
 
 
     def __str__(self):
-        result = ''
+        '''
+        Convierte el objeto Espacio a String devolviendo
+        el listado de puntos y el numero de ellos.
+        '''
+        result = self.pointsToString()
 
-        for i in self.pointList:
-            result += str(i) + '\n'
-
-        result += "Hay %s puntos. \n" % (self.getNumPoints())
+        result += "Hay %s puntos. \n" % (self.pointListSize())
         return result
 
 
 
+    '''
+    ******************************************************************************
+            Algoritmos para encontrar la distancia minima entre dos puntos
+    ******************************************************************************
+    '''
+
+
+    '''
+                                Algoritmos Fuerza Bruta
+    ******************************************************************************
+    '''
+
+
+
     def getClosestBrute(self):
+        '''
+        Algoritmo de busqueda de los dos puntos mas cercanos.
+
+        Solucion por fuerza bruta que compara todos los puntos
+        con todos y asi obtiene los dos mas cercanos
+        '''
         closestPair = [self.getPoint(0), self.getPoint(1)]
 
         for i in self.pointList:
             for j in self.pointList:
-                if ((i != j)
-                    and (i.distance(j) < closestPair[0].distance(closestPair[1]))):
+                if ( (i != j) and
+                    (i.distance(j) < closestPair[0].distance(closestPair[1])) ):
 
                     closestPair[0] = i
                     closestPair[1] = j
@@ -93,30 +154,23 @@ class Space():
 
 
 
-    def getClosestBrutePlus(self):
-        closestPair = [self.getPoint(0), self.getPoint(1)]
+    def getClosestBrutePlus(self, initPointList = None):
+        '''
+        Algoritmo de busqueda de los dos puntos mas cercanos.
 
-        for i in xrange(0,len(self.pointList)):
-            for j in xrange(0, i):
-                if ((i != j)
-                    and (self.getPoint(i).distance(self.getPoint(j))
-                    < closestPair[0].distance(closestPair[1]))):
+        Solucion por fuerza bruta que compara todos los puntos
+        con todos pero si ha comparado A con B no vuelve
+        A comparar B con A.
+        '''
 
-                    closestPair[0] = self.getPoint(i)
-                    closestPair[1] = self.getPoint(j)
+        if not initPointList: initPointList = self.pointList
 
-        return closestPair
-
-
-
-    def getClosestBrutePlus(self, initPointList):
         closestPair = [initPointList[0], initPointList[1]]
 
-        for i in xrange(0,len(initPointList)):
-            for j in xrange(0, i):
-                if ((i != j)
-                    and (initPointList[i].distance(initPointList[j])
-                    < closestPair[0].distance(closestPair[1]))):
+        for i in range(0,len(initPointList)):
+            for j in range(0, i):
+                if (initPointList[i].distance(initPointList[j])
+                    < closestPair[0].distance(closestPair[1])):
 
                     closestPair[0] = initPointList[i]
                     closestPair[1] = initPointList[j]
@@ -125,17 +179,27 @@ class Space():
 
 
 
+    '''
+                            Algoritmos Divide y venceras
+    ******************************************************************************
+    '''
+
+
+
     def getClosestDivideConquer(self):
+        '''
+        Algoritmo de busqueda de los dos puntos mas cercanos.
 
-        closestPair = self.divide(self.pointList, 0)
+        Solucion por divide y venceras.
+        '''
 
-        return closestPair
+        return self.divide(self.pointList, 0)
 
 
 
     def divide(self, initPointList, i):
 
-        i = (i+1) % self.getDimension()
+        i = (i+1) % self.dimension
 
         if (len(initPointList) > 10):
             initPointList.sort(key=lambda point: point.vector[i])

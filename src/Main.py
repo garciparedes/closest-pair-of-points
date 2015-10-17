@@ -55,7 +55,7 @@ def closestPairBrute(space):
 
 def closestPairBrutePlus(space):
     time1 = time.time()
-    lista = space.getClosestBrutePlus(space.pointList)
+    lista = space.getClosestBrutePlus()
     time2 = time.time()
 
     print 'function took %0.3f s' % ( (time2-time1))
