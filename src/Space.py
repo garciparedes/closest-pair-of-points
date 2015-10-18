@@ -31,7 +31,6 @@ class Space(object):
 
         Descarta los puntos con dimension distinta a la fijada en self.dimension
         '''
-
         self.dimension = dimension
 
         for i in pointList:
@@ -88,7 +87,6 @@ class Space(object):
 
         Toma el atributo pointList como valor por defecto.
         '''
-
         if not pointList: pointList = self.pointList
 
         result = ''
@@ -163,7 +161,6 @@ class Space(object):
         con todos pero si ha comparado A con B no vuelve
         A comparar B con A.
         '''
-
         if not initPointList: initPointList = self.pointList
 
         closestPair = PairPoint(initPointList[0], initPointList[1])
@@ -192,7 +189,6 @@ class Space(object):
 
         Solucion por divide y venceras.
         '''
-
         return self.divide(self.pointList, 0)
 
 
