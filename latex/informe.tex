@@ -2,9 +2,10 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
 \usepackage{graphicx}
+
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 
 \title{Algoritmo: Buscar el par de puntos mas cercano en espacio n-dimensional}
 \author{Sergio García Prado}
@@ -33,7 +34,7 @@
 	El problema que se va a analizar se basa en encontrar los dos puntos más cercanos entre un conjunto de puntos pertenecientes en un espacio n-dimensional. Es una condición obligatoria que todos los puntos pertenezca a la misma dimensión ya que de no ser así no tendría sentido comparar sus distancias.
 
 	\paragraph{}
-	Existen distintos enfoques para resolver este problema. El mas simple pero a la vez menos eficiente de todos se basa en comparar todos los puntos con todos e ir guardando los dos que menor distancia tienen entre sí. Esta solución tiene un coste de O(n2) algo que podemos mejorar si nos damos cuenta de algunos detalles mediante algoritmos del tipo divide y vencerás.
+	Existen distintos enfoques para resolver este problema. El mas simple pero a la vez menos eficiente de todos se basa en comparar todos los puntos con todos e ir guardando los dos que menor distancia tienen entre sí. Esta solución tiene un coste de $O(n2)$ algo que podemos mejorar si nos damos cuenta de algunos detalles mediante algoritmos del tipo divide y vencerás.
 
 	\paragraph{Motivos por los que usar divide y vencerás}
 
@@ -93,18 +94,54 @@
 \section{Pseudocódigo}
 % Insert the algorithm
 \begin{algorithm}
-    \caption{Compute sum of integers in array}
-        \label{array-sum}
-        \begin{algorithmic}[1]
-            \Procedure{ClosestPair}{$A$}
-            \State $sum = 0$
-            \For {each integer $i$ in $A$}
-                \State $sum = sum + i$
-            \EndFor
-            \State Return $sum$
-            \EndProcedure
-        \end{algorithmic}
-    \end{algorithm}
+
+	\caption{Euclid’s algorithm}
+
+	\label{euclid}
+
+	\begin{algorithmic}[1] % The number tells where the line numbering should start
+
+	\Procedure{CLOSESTPAIR}{$PLIST, i, dim$}  \Comment{The g.c.d. of a and b}
+		\State
+		\If{$len(PLIST)>0$}
+			\State
+			\State $i\gets(i+1) \bmod dim$
+			\State
+			\State $PLIST \gets sort(i, PLIST)$
+			\State
+			\State $leftPLIST \gets PLIST[:len(PLIST)/2]$
+			\State
+			\State $rightPLIST \gets PLIST[len(PLIST)/2:]$
+			\State
+			\State $leftCPAIR \gets CLOSESTPAIR(leftPLIST, i, dim)$
+			\State
+			\State $rightCPAIR \gets CLOSESTPAIR(rightPLIST, i, dim)$
+			\State
+			\State $CPAIR \gets min(leftCPAIR, righCPAIR)$
+			\State
+			\State $distance \gets CPAIR.distance()$
+			\State
+			\State $borderPLIST \gets closePLIST(distance, leftPLIST, rightPLIST)$
+			\State
+			\State $borderCPAIR \gets CLOSESTPAIR(borderPLIST, i , dim)$
+			\State
+			\State $CPAIR \gets min(CPAIR, borderCPAIR)$
+			\State
+		\Else
+			\State
+			\State $CPAIR \gets borazPair(PLIST)$
+			\State
+		\EndIf
+		\State
+		\State \textbf{return} $CPAIR$\Comment{The gcd is b}
+	\State
+	\EndProcedure
+
+	\end{algorithmic}
+
+\end{algorithm}
+
+
 \section{Análisis de crecimiento}
 
 \end{document}
