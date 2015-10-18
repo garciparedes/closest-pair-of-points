@@ -199,9 +199,9 @@ class Space(object):
 
     def divide(self, initPointList, i):
 
-        i = (i+1) % self.dimension
-
         if (len(initPointList) > 10):
+            i = (i+1) % self.dimension
+
             initPointList.sort(key=lambda point: point.vector[i])
 
             leftClosestPair = self.divide(initPointList[len(initPointList)/2:],i)

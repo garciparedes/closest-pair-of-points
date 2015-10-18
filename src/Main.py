@@ -34,8 +34,8 @@ def main():
 
 
         #pyplot.show()
-        closestPairBrute(space)
-        closestPairBrutePlus(space)
+        #closestPairBrute(space)
+        #closestPairBrutePlus(space)
         closestPairDivide(space)
         print "\n\n\n"
 

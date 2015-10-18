@@ -1,0 +1,30 @@
+function CLOSESTPAIR(PLIST, i, min): CPAIR
+    PLIST: conjunto de puntos.
+    i: dimension actual.
+    dim: dimensiones del espacio
+
+    CPAIR: par de puntos con distancia minima
+
+    if (len(PLIST) > 10)
+        i <-i+1
+        PLIST <- sort(PLIST, i)
+        leftPLIST <- PLIST[:len(PLIST)/2]
+        rightPLIST<- PLIST[len(PLIST)/2:]
+
+        leftCPAIR <- CLOSESTPAIR(leftPLIST, i, dim )
+        righCPAIR <- CLOSESTPAIR(rightPLIST, i, dim )
+
+        CPAIR <- min(leftCPAIR, righCPAIR)
+
+        distance <- CPAIR.distance()
+
+        borderPLIST <- closePLIST(distance, leftPLIST, rightPLIST)
+
+        borderCPAIR <- CLOSESTPAIR(borderPLIST, i , dim)
+
+        CPAIR <- min(CPAIR, borderCPAIR)
+
+    else:
+        CPAIR <- BORAZPAIR(PLIST)
+
+    return CPAIR
