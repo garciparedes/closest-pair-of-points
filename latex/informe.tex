@@ -31,11 +31,11 @@
 \section{Introducción}
 
 	\paragraph{}
-	El problema que se va a analizar se basa en encontrar los dos puntos más cercanos entre un conjunto de puntos pertenecientes a un espacio n-dimensional. Es una condición obligatoria que todos los puntos pertenezca a la misma dimensión ya que de no ser así no tendría sentido comparar sus distancias para encontrar el par mas cercano.
+	El problema que se va a analizar se basa en encontrar los dos puntos más cercanos en un conjunto de puntos pertenecientes a un espacio n-dimensional. Es una condición obligatoria que todos los puntos pertenezca a la misma dimensión ya que de no ser así no tendría sentido comparar sus distancias para encontrar el par mas cercano.
 
 	\paragraph{}
-	Existen distintos enfoques para resolver este problema. El mas simple pero a la vez menos eficiente de todos se basa en comparar todos los puntos con todos e ir guardando los dos que menor distancia tienen entre sí. Esta solución tiene un crecimiento asintótico de $O(n2)$.
-	
+	Existen distintos enfoques para resolver este problema. El mas simple pero a la vez menos eficiente de todos se basa en comparar todos los puntos con todos e ir guardando los dos que menor distancia tienen entre sí. Esta solución tiene un crecimiento asintótico de $O(n^2)$.
+
 	\paragraph{}
 	Tras analizar el problema detenidamente nos damos cuenta de que dados dos puntos A y B, la distancia del punto A al punto B es la misma que del B al A. Por este detalle deducimos que nos podemos ahorrar estas operaciones innecesarias comparando solo una vez los pares entre sí.
 	\paragraph{}
@@ -46,16 +46,17 @@
 		\begin{enumerate}
 
 			\item
-			Los puntos mas cercanos en el espacio por la propia definición de cercanía van a estar en una región próxima del espacio. Este es el motivo por el cual nos podemos ahorrar comparar dos puntos que están muy alejados en el espacio.
+			Los puntos mas cercanos en el espacio por la propia definición de cercanía van a estar en una región próxima del espacio. Este es el motivo por el cual nos podemos ahorrar comparar dos puntos que están muy alejados entre sí en el espacio.
 			\item
 			Si encontramos un mínimo en un subconjunto del espacio y este lo es también para todos los subconjuntos que contienen a este, entonces habremos encontrado el mínimo de todo el espacio.
 
 		\end{enumerate}
 
-\section{Solución}
+\section{Solución implementada (Divide y vencerás)}
 
 	\paragraph{}
-	La solución que se ha escogido es la de realizar particiones binarias en el espacio recursivamente hasta tener subconjuntos de pequeño tamaño (En la implementación propuesta como ejemplo se ha fijado en conjuntos de 10 puntos.) para después compararlos utilizando un algoritmo boraz que nos asegura el mínimo local de cada subconjunto. Lo siguiente es quedarse con el mínimo de las dos particiones binarias y analizar los puntos que se quedaron en la frontera de las dos particiones ya que puede darse el caso de que el par de puntos con distancia mínima contuviese el punto 1 en la particion 1 y el punto 2 en la partición 2. De no ser por la parte de combinación estos casos no se estudiarían y podría darse el caso de que el mínimo encontrado no fuera el real.
+	La solución que se ha escogido es la de realizar particiones binarias en el espacio recursivamente hasta tener subconjuntos de pequeño tamaño (En la implementación propuesta como ejemplo se ha fijado en conjuntos de 10 puntos.) para después compararlos utilizando un algoritmo boraz que nos asegura el mínimo local de cada subconjunto. Lo siguiente es quedarse con el mínimo de las dos particiones binarias y analizar los puntos que se quedaron en la frontera que las divide ya que puede darse el caso de que el par de puntos con distancia mínima contuviese el punto 1 perteneciente a la particion 1 y el punto 2 a la partición 2. Si no se evaluase este caso podría darse el caso de que el mínimo encontrado no fuera el real ya que aunque esté en la frontera de los dos subconjuntos pertenece al espacio.
+	
 
 	\paragraph{}
 	Las explicaciones se van a exponer en un espacio de 3 dimensiones pero estas son extrapolables cualquier número de dimensiones.
@@ -63,14 +64,14 @@
 	\subsection{Divide}
 		\paragraph{}
 		Lo que intentamos conseguir al dividir el espacio en particiones binarias recursivamente es agrupar los puntos que están más próximos para así intentar prescindir del mayor número de comparaciones innecesarias. Para ello se pueden tomar distintos enfoques:
-		
+
 		\begin{itemize}
-		
-			\item 
-			El primero de ellos consiste en hacer la partición siempre en la misma dimensión. Este enfoque tiene la ventaja de que tan solo hay que ordenar los elementos una vez, ya que al no tener que cambiar de dimensión la ordenación se mantiene. Pero aún así esto es menos eficiente ya que no se consigue la meta deseada que era agrupar los puntos cercanos en conjuntos. En este caso al solo depender de una de las dimensiones en las otras pueden tener valores muy diferentes por lo que al producirse la fusión se tienen que evaluar muchos más puntos. Esto se ilustra en la figura \ref{same_dim}. 
-			
-			\item 
-			La segunda solución consiste en que en cada nivel de recursión se cambie la dimensión en la que se particionan los puntos, lo que conlleva a una reordenación de los mismos respecto a dicha dimensión. La carga de trabajo en este caso es mayor pero la división que se consigue es mucho más homogénea en cuanto a distancia lo que nos da una gran ventaja al fusionar los distintos subconjuntos. Esto se ilustra en la figura \ref{different_dim}. 
+
+			\item
+			El primero de ellos consiste en hacer la partición siempre en la misma dimensión. Este enfoque tiene la ventaja de que tan solo hay que ordenar los elementos una vez, ya que al no tener que cambiar de dimensión la ordenación se mantiene. Pero aún así esto es menos eficiente ya que no se consigue la meta deseada que era agrupar los puntos cercanos en conjuntos. En este caso al solo depender de una de las dimensiones en las otras pueden tener valores muy diferentes por lo que al producirse la fusión se tienen que evaluar muchos más puntos. Esto se ilustra en la figura \ref{same_dim}.
+
+			\item
+			La segunda solución consiste en que en cada nivel de recursión se cambie la dimensión en la que se particionan los puntos, lo que conlleva a una reordenación de los mismos respecto a dicha dimensión. La carga de trabajo en este caso es mayor pero la división que se consigue es mucho más homogénea en cuanto a distancia lo que nos da una gran ventaja al fusionar los distintos subconjuntos. Esto se ilustra en la figura \ref{different_dim}.
 
 		\end{itemize}
 
@@ -93,12 +94,12 @@
 		\paragraph{}
 		Esta parte de nuestra solución corresponde a la combinación de los resultados obtenidos al dividir el subproblema. En lo que se basa es en encontrar cual de las particiones en las que se ha dividido el conjunto de puntos es la que tiene el par con distancia mínima y a la vez estudiar el espacio frontera, ya que hasta ahora no habíamos tenido en cuenta los pares de puntos que están uno en el primer subconjunto y otro en el segundo subconjunto.
 		\subsubsection{Encontrar el minimo}
-		
+
 			\paragraph{}
 			Esta parte es sencilla, ya que tan solo hay que comparar las distancias de cada par de la partición y quedarse con el que tenga la menor de ellas.
-			
+
 		\subsubsection{Analizar los pares en el punto intermedio}
-			
+
 			\paragraph{}
 			Para facilitar el entendimiento del problema lo ilustraremos con la figura \ref{example_border} que corresponde a un ejemplo en 2 dimensiones. Una vez obtenida la distancia minima en el paso anterior tendremos que estudiar los pares de puntos que cumplan la condición de que uno de ellos esté en un subconjunto y otro en el otro subconjunto.
 			\paragraph{}
@@ -111,63 +112,52 @@
 				\includegraphics[width=60mm]{strip_closesr1.png}
 				\caption{Particionamiento en distintas dimensiones \label{example_border}}
 			\end{figure}
-			
-		
+
+
 	\paragraph{}
 	Realizando esta operación con cada uno de los subconjuntos, es decir, de forma recursiva,  obtendremos el mínimo global de todo el espacio ahorrándonos un gran número de operaciones innecesarias lo que conlleva una gran mejora de eficiencia y obteniendo una solución con un crecimiento asintótico de $O(nlog(n))$.
 
 
-\section{Pseudocódigo}
-% Insert the algorithm
-\begin{algorithm}
+	\subsection{Pseudocódigo}
+		% Insert the algorithm
+		\begin{algorithm}
 
-	\caption{Euclid’s algorithm}
+			\caption{Euclid’s algorithm}
 
-	\label{euclid}
+			\label{euclid}
 
-	\begin{algorithmic}[1] % The number tells where the line numbering should start
+			\begin{algorithmic}[1] % The number tells where the line numbering should start
 
-	\Procedure{CLOSESTPAIR}{$PLIST, i, dim$}  \Comment{The g.c.d. of a and b}
-		\State
-		\If{$len(PLIST)>10$}
-			\State
-			\State $i\gets(i+1) \bmod dim$
-			\State
-			\State $PLIST \gets sort(i, PLIST)$
-			\State
-			\State $leftPLIST \gets PLIST[:len(PLIST)/2]$
-			\State
-			\State $rightPLIST \gets PLIST[len(PLIST)/2:]$
-			\State
-			\State $leftCPAIR \gets CLOSESTPAIR(leftPLIST, i, dim)$
-			\State
-			\State $rightCPAIR \gets CLOSESTPAIR(rightPLIST, i, dim)$
-			\State
-			\State $CPAIR \gets min(leftCPAIR, righCPAIR)$
-			\State
-			\State $distance \gets CPAIR.distance()$
-			\State
-			\State $borderPLIST \gets closePLIST(distance, leftPLIST, rightPLIST)$
-			\State
-			\State $borderCPAIR \gets CLOSESTPAIR(borderPLIST, i , dim)$
-			\State
-			\State $CPAIR \gets min(CPAIR, borderCPAIR)$
-			\State
-		\Else
-			\State
-			\State $CPAIR \gets borazPair(PLIST)$
-			\State
-		\EndIf
-		\State
-		\State \textbf{return} $CPAIR$\Comment{The gcd is b}
-	\State
-	\EndProcedure
+			\Procedure{CLOSESTPAIR}{$PLIST, i, dim$} 
+				\If{$len(PLIST)>10$}
+					\State $i\gets(i+1) \bmod dim$
+					\State $PLIST \gets sort(i, PLIST)$
+					\State $leftPLIST \gets PLIST[:len(PLIST)/2]$
+					\State $rightPLIST \gets PLIST[len(PLIST)/2:]$
+					\State $leftCPAIR \gets CLOSESTPAIR(leftPLIST, i, dim)$
+					\State $rightCPAIR \gets CLOSESTPAIR(rightPLIST, i, dim)$
+					\State $CPAIR \gets min(leftCPAIR, righCPAIR)$
+					\State $distance \gets CPAIR.distance()$
+					\State $borderPLIST \gets closePLIST(distance, leftPLIST, rightPLIST)$
+					\State $borderCPAIR \gets CLOSESTPAIR(borderPLIST, i , dim)$
+					\State $CPAIR \gets min(CPAIR, borderCPAIR)$
+				\Else
+					\State $CPAIR \gets borazPair(PLIST)$
+				\EndIf
+				\State \textbf{return} $CPAIR$
+			\EndProcedure
 
-	\end{algorithmic}
+			\end{algorithmic}
 
-\end{algorithm}
+		\end{algorithm}
+	\subsection{Análisis de crecimiento}
 
+	\paragraph{Aclaración:}
+	La solución implementada y aquí explicada no es la óptima, ya que esta tiene un crecimiento asintótico de $O(n(log(n)^d)$ donde $d = $ dimension del espacio. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
+		
+\section{Solución Óptima}
+	\paragraph{}
+	La solución óptima al problema de encontrar el par de puntos más cercano en un espacio n-dimensional consiste en ordenar los puntos en todas las dimensiones antes de comenzar el algoritmo divide y vencerás. Con este enfoque tendremos un crecimiento asintótico de $O(nlogn)$
 
-\section{Análisis de crecimiento}
 
 \end{document}

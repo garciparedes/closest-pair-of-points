@@ -7,7 +7,7 @@ Author: Sergio Garcia Prado
 
 
 from Point import Point
-from Space import Space
+from SpaceOp import Space
 
 import time
 
@@ -19,10 +19,17 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def main():
 
-    space = Space.generateSpace(10000,3,10**(-10))
+    for i in range(0,1):
+        #space = Space.generateSpace(100,100,10**(-197))
+        space = Space.generateSpace(10000,3,10**(-11))
+        print space
+
+        closestPairDivide(space)
+        closestPairBrutePlus(space)
+        print "\n\n\n"
 
 
-    print space
+    '''
 
     fig = pylab.figure()
     ax = Axes3D(fig)
@@ -34,14 +41,13 @@ def main():
 
     #closestPairBrute(space)
     closestPairBrutePlus(space)
-    closestPairDivide(space)
     print "\n\n\n"
 
     closestPairBrute = space.getClosestDivideConquer()
     ax.scatter(closestPairBrute.pointA.vector[0], closestPairBrute.pointA.vector[1], closestPairBrute.pointA.vector[2], c= 'g', s= 30)
     ax.scatter(closestPairBrute.pointB.vector[0], closestPairBrute.pointB.vector[1], closestPairBrute.pointB.vector[2], c= 'g', s= 30)
     pyplot.show()
-
+    '''
 
 
 def closestPairBrute(space):

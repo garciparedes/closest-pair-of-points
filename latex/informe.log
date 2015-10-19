@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.10.17)  19 OCT 2015 13:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.10.17)  19 OCT 2015 17:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -453,55 +453,57 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 37.
 
 [1]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 70.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 71.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 70.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 71.
 
-<cube_division_1.jpg, id=16, 1927.2pt x 1007.765pt>
+<cube_division_1.jpg, id=17, 1927.2pt x 1007.765pt>
 File: cube_division_1.jpg Graphic file (type jpg)
  <use cube_division_1.jpg>
-Package pdftex.def Info: cube_division_1.jpg used on input line 81.
+Package pdftex.def Info: cube_division_1.jpg used on input line 82.
 (pdftex.def)             Requested size: 170.71652pt x 89.26485pt.
 
-<cube_division_2.jpg, id=17, 1927.2pt x 1007.765pt>
+<cube_division_2.jpg, id=18, 1927.2pt x 1007.765pt>
 File: cube_division_2.jpg Graphic file (type jpg)
  <use cube_division_2.jpg>
-Package pdftex.def Info: cube_division_2.jpg used on input line 87.
+Package pdftex.def Info: cube_division_2.jpg used on input line 88.
 (pdftex.def)             Requested size: 170.71652pt x 89.26485pt.
 
 [2 <./cube_division_1.jpg> <./cube_division_2.jpg>]
-<strip_closesr1.png, id=22, 368.87813pt x 281.55188pt>
+<strip_closesr1.png, id=23, 368.87813pt x 281.55188pt>
 File: strip_closesr1.png Graphic file (type png)
 
 <use strip_closesr1.png>
-Package pdftex.def Info: strip_closesr1.png used on input line 111.
+Package pdftex.def Info: strip_closesr1.png used on input line 112.
 (pdftex.def)             Requested size: 170.71652pt x 130.30162pt.
- [3 <./strip_closesr1.png>] [4] [5] (./informe.aux) ) 
+ [3 <./strip_closesr1.png>] [4] (./informe.aux) ) 
 Here is how much of TeX's memory you used:
  2827 strings out of 493089
- 40013 string characters out of 6134841
- 112653 words of memory out of 5000000
+ 40009 string characters out of 6134841
+ 110653 words of memory out of 5000000
  6276 multiletter control sequences out of 15000+600000
  7313 words of font info for 26 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,5n,23p,807b,284s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2015/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2015/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2015/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on informe.pdf (6 pages, 612733 bytes).
+ 37i,5n,23p,847b,283s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2015/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2015/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2015/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2015/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2015/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmti12.pfb>
+Output written on informe.pdf (5 pages, 627804 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 42 compressed objects within 1 object stream
+ 69 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
