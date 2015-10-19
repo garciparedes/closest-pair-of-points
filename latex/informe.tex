@@ -31,17 +31,22 @@
 \section{Introducción}
 
 	\paragraph{}
-	El problema que se va a analizar se basa en encontrar los dos puntos más cercanos entre un conjunto de puntos pertenecientes en un espacio n-dimensional. Es una condición obligatoria que todos los puntos pertenezca a la misma dimensión ya que de no ser así no tendría sentido comparar sus distancias.
+	El problema que se va a analizar se basa en encontrar los dos puntos más cercanos entre un conjunto de puntos pertenecientes a un espacio n-dimensional. Es una condición obligatoria que todos los puntos pertenezca a la misma dimensión ya que de no ser así no tendría sentido comparar sus distancias para encontrar el par mas cercano.
 
 	\paragraph{}
-	Existen distintos enfoques para resolver este problema. El mas simple pero a la vez menos eficiente de todos se basa en comparar todos los puntos con todos e ir guardando los dos que menor distancia tienen entre sí. Esta solución tiene un coste de $O(n2)$ algo que podemos mejorar si nos damos cuenta de algunos detalles mediante algoritmos del tipo divide y vencerás.
+	Existen distintos enfoques para resolver este problema. El mas simple pero a la vez menos eficiente de todos se basa en comparar todos los puntos con todos e ir guardando los dos que menor distancia tienen entre sí. Esta solución tiene un crecimiento asintótico de $O(n2)$.
+	
+	\paragraph{}
+	Tras analizar el problema detenidamente nos damos cuenta de que dados dos puntos A y B, la distancia del punto A al punto B es la misma que del B al A. Por este detalle deducimos que nos podemos ahorrar estas operaciones innecesarias comparando solo una vez los pares entre sí.
+	\paragraph{}
+	Profundizando algo mas en nuestro problema vemos que al ser posiciones, estas se pueden subdividir en subconjuntos mas pequeños y así obviar el análisis de pares que estén muy alejados. Este enfoque es del tipo divide y vencerás. En la siguiente sección expondremos con más profundidad las ventajas de esta solución.
 
 	\paragraph{Motivos por los que usar divide y vencerás}
 
 		\begin{enumerate}
 
 			\item
-			Los puntos mas cercanos en el espacio por la propia definición de cercanía van a estar en una región próxima del espacio. Este es el motivo por el cual nos podemos ahorrar comparar dos puntos que están muy alejados en el mapa.
+			Los puntos mas cercanos en el espacio por la propia definición de cercanía van a estar en una región próxima del espacio. Este es el motivo por el cual nos podemos ahorrar comparar dos puntos que están muy alejados en el espacio.
 			\item
 			Si encontramos un mínimo en un subconjunto del espacio y este lo es también para todos los subconjuntos que contienen a este, entonces habremos encontrado el mínimo de todo el espacio.
 
@@ -73,22 +78,43 @@
 
 	\begin{figure}[ht!]
 		\centering
-		\includegraphics[width=120mm]{cube_division_1.jpg}
+		\includegraphics[width=60mm]{cube_division_1.jpg}
 		\caption{Particionamiento en la misma dimensión \label{same_dim}}
 	\end{figure}
 
 	\begin{figure}[ht!]
 		\centering
-		\includegraphics[width=120mm]{cube_division_2.jpg}
+		\includegraphics[width=60mm]{cube_division_2.jpg}
 		\caption{Particionamiento en distintas dimensiones \label{different_dim}}
 	\end{figure}
 
 
-	\subsection{Venceras}
+	\subsection{Vencerás}
 		\paragraph{}
+		Esta parte de nuestra solución corresponde a la combinación de los resultados obtenidos al dividir el subproblema. En lo que se basa es en encontrar cual de las particiones en las que se ha dividido el conjunto de puntos es la que tiene el par con distancia mínima y a la vez estudiar el espacio frontera, ya que hasta ahora no habíamos tenido en cuenta los pares de puntos que están uno en el primer subconjunto y otro en el segundo subconjunto.
+		\subsubsection{Encontrar el minimo}
+		
+			\paragraph{}
+			Esta parte es sencilla, ya que tan solo hay que comparar las distancias de cada par de la partición y quedarse con el que tenga la menor de ellas.
+			
+		\subsubsection{Analizar los pares en el punto intermedio}
+			
+			\paragraph{}
+			Para facilitar el entendimiento del problema lo ilustraremos con la figura \ref{example_border} que corresponde a un ejemplo en 2 dimensiones. Una vez obtenida la distancia minima en el paso anterior tendremos que estudiar los pares de puntos que cumplan la condición de que uno de ellos esté en un subconjunto y otro en el otro subconjunto.
+			\paragraph{}
+			Ahora deberemos seleccionar el punto mas proximo del primer subconjunto e ir examinando si la distancia a los puntos del segundo subconjunto es menor que la distancia minima de los dos subconjuntos y si es así añadirle a los puntos que analizaremos ahora. También habrá que hacer lo mismo pero con los puntos del primer subconjunto. Como teníamos los puntos ordenados llegamos a la conclusión de que en cuanto haya un punto que no cumpla la condición todos los siguientes puntos de ese subconjunto ya no la cumplirán, por lo que podemos ahorrarnos también esos cálculos.
+			\paragraph{}
+			Finalmente obtendremos el mínimo del subconjunto que acabamos de generar y lo compararemos con el mínimo anteriormente obtenido para así encontrar el mínimo global del conjunto.
 
-
-
+			\begin{figure}[ht!]
+				\centering
+				\includegraphics[width=60mm]{strip_closesr1.png}
+				\caption{Particionamiento en distintas dimensiones \label{example_border}}
+			\end{figure}
+			
+		
+	\paragraph{}
+	Realizando esta operación con cada uno de los subconjuntos, es decir, de forma recursiva,  obtendremos el mínimo global de todo el espacio ahorrándonos un gran número de operaciones innecesarias lo que conlleva una gran mejora de eficiencia y obteniendo una solución con un crecimiento asintótico de $O(nlog(n))$.
 
 
 \section{Pseudocódigo}
@@ -103,7 +129,7 @@
 
 	\Procedure{CLOSESTPAIR}{$PLIST, i, dim$}  \Comment{The g.c.d. of a and b}
 		\State
-		\If{$len(PLIST)>0$}
+		\If{$len(PLIST)>10$}
 			\State
 			\State $i\gets(i+1) \bmod dim$
 			\State
