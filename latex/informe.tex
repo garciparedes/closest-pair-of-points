@@ -128,35 +128,49 @@
 
 			\begin{algorithmic}[1] % The number tells where the line numbering should start
 
-			\Procedure{closestPair}{$PLIST, i, dim$} 
-				\If{$len(PLIST) < 3$}
+			\Procedure{closestPair}{$PLIST (ListaDePuntos), actDim (DimensionActual), dim (DimensionesTotales)$} 
+			
+				\If{$len(P) < 3$}
 					
 					\State \textbf{return}  $borazPair(PLIST)$
 
 				\Else
 					
-					\State $i\gets(i+1) \bmod dim$
+					\State $actDim\gets(actDim+1) \bmod dim$ 	\Comment{T(n) = O(1).}
 					
-					\State $PLIST \gets sort(i, PLIST)$
+					\State
+
 					
-					\State $LPLIST \gets PLIST[:len(PLIST)/2]$
+					\State $P \gets sort(i, P)$
+					\Comment{T(n,d) = O(nlogn).}
 					
-					\State $RPLIST \gets PLIST[len(PLIST)/2:]$
+					\State
 					
-					\State $leftCPAIR \gets closestPair(LPLIST, i, dim)$
+					\State $LP \gets P[:len(P)/2]$
+					\Comment{T(n,d) = O(1).}
 					
-					\State $rightCPAIR \gets closestPair(RPLIST, i, dim)$
+					\State $RP \gets P[len(P)/2:]$
+					\Comment{T(n,d) = O(1).}
 					
-					\State $CPAIR \gets min(leftCPAIR, righCPAIR)$
+					\State
 					
-					\State $d \gets CPAIR.distance()$
+					\State $LPair \gets closestPair(LP, actDim, dim)$
+					\Comment{T(n,d) = T(n/2, d).}
 					
-					\State $MPLIST \gets closePLIST(d, LPLIST, RPLIST)$
+					\State $RPair \gets closestPair(RP, actDim, dim)$
+					\Comment{T(n,d) = T(n/2, d).}
 					
-					\State $MPAIR \gets closestPair(MPLIST, i , dim)$
+					\State $LRPair \gets min(LPair, RPair)$
+					\Comment{T(n,d) = O(1).}
 					
-					\State \textbf{return} $min(CPAIR, MPAIR)$
-				
+					\State
+					
+					\State $MPair \gets closestMidle(LRPair, LP, RP, actDim, dim)$
+					\Comment{T(n,d) = U(n, d-1).}
+					
+					\State
+
+					\State \textbf{return} $min(MPair, LRPair)$
 				\EndIf
 			
 			\EndProcedure
@@ -168,22 +182,37 @@
 		
 		\begin{algorithm}
 
-			\caption{closePLIST}
+			\caption{closestMidle}
 
-			\label{closePLIST}
+			\label{closestMidle}
 
 			\begin{algorithmic}[1] % The number tells where the line numbering should start
 
-			\Procedure{closePLIST}{$PLIST, i, dim$} 
-				\If{$len(PLIST) < 3$}
-					
-					\State \textbf{return}  $borazPair(PLIST)$
-
-				\Else
-					
-									
-				\EndIf
+			\Procedure{closestMidle}{$LRPair, LP, RP, actDim, dim$} 
 			
+				\State $distance \gets LRPair.distance()$
+				\Comment{T(n, d) = O(1).}
+
+				\State $LBorderPoint \gets RP[0]$
+				\Comment{T(n, d) = O(1).}
+
+				\State $RBorderPoint \gets LP[-1]$
+				\Comment{T(n, d) = O(1).}
+
+				\State
+				
+				\State $MP \gets points/  point[actDim]-LBorderPoint[actDim] < distance \in RP$
+				\Comment{T(n, d) = O(n).}
+
+				\State $MP \gets MP \cup points/  point[actDim]-RBorderPoint[actDim] < distance \in LP$
+				\Comment{T(n, d) = O(n).}
+
+				\State	
+								
+				\State \textbf{return} $closestPair(MP, actDim, dim)$
+				\Comment{T(n) = T(n/2, d).}
+
+
 			\EndProcedure
 
 			\end{algorithmic}
@@ -209,7 +238,7 @@
 
 	\begin{itemize}
 		\item
-		Hola				
+		....
 	\end{itemize}
 
 
