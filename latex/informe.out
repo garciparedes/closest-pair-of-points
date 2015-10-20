@@ -1,0 +1,12 @@
+\BOOKMARK [1][-]{section.1}{Introducci\363n}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Divide y vencer\341s}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Enfoques para resolver encontrar el par de puntos m\341s cercano}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Soluci\363n implementada \(Divide y vencer\341s\)}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{Division}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Combinacion}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Encontrar el minimo}{subsection.2.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Analizar los pares en el punto intermedio}{subsection.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{Pseudoc\363digo}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.4}{An\341lisis de crecimiento}{section.2}% 10
+\BOOKMARK [1][-]{section.3}{Soluci\363n \323ptima}{}% 11
+\BOOKMARK [1][-]{section.4}{Referencias}{}% 12

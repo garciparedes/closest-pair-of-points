@@ -7,6 +7,9 @@
 \usepackage{algorithm}% http://ctan.org/pkg/algorithms
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 
+\usepackage{hyperref}
+
+
 \title{Algoritmo: Buscar el par de puntos mas cercano en espacio n-dimensional}
 \author{Sergio García Prado}
 
@@ -31,68 +34,99 @@
 \section{Introducción}
 
 	\paragraph{}
-	El problema que se va a analizar se basa en encontrar los dos puntos más cercanos en un conjunto de puntos pertenecientes a un espacio n-dimensional. Es una condición obligatoria que todos los puntos pertenezca a la misma dimensión ya que de no ser así no tendría sentido comparar sus distancias para encontrar el par mas cercano.
+	El problema que se va a analizar se basa en encontrar el par de puntos más cercanos en un conjunto de puntos pertenecientes a un espacio n-dimensional. Es una condición obligatoria que todos los puntos pertenezca a la misma dimensión ya que de no ser así no tendría sentido comparar sus distancias para encontrar el par mas cercano. Seguidamente se exponen los fundamentos del algoritmo que mejor resuelve el problema.
+	
+	\subsection{Divide y vencerás}
+		
+		\paragraph{}
+		Divide y Vencerás hace referencia a uno de los paradigmas de diseño de algoritmos mas importantes. Los algoritmos de este tipo por lo general constan de los siguientes pasos:
+		
+		\paragraph{}
+		En primer lugar ha de plantearse el problema de forma que pueda ser descompuesto en k subproblemas del mismo tipo, pero de menor tamaño. Es decir, si el tamaño de la entrada es n, hemos de conseguir dividir el problema en k subproblemas (donde $1 \leq k \leq n$), cada uno con una entrada de tamaño $n/k$ y donde $0 \leq n/k < n$. A esta tarea se le conoce como división.
+		
+		\paragraph{}
+		En segundo lugar han de resolverse independientemente todos los subproblemas, bien directamente si son elementales o bien de forma recursiva. El hecho de que el tamaño de los subproblemas sea estrictamente menor que el tamaño original del problema nos garantiza la convergencia hacia los casos elementales, también denominados casos base.
+		
+		\paragraph{}
+		Por último, combinar las soluciones obtenidas en el paso anterior para construir la solución del problema original.
+		
+	\subsection{Enfoques para resolver encontrar el par de puntos más cercano}
 
-	\paragraph{}
-	Existen distintos enfoques para resolver este problema. El mas simple pero a la vez menos eficiente de todos se basa en comparar todos los puntos con todos e ir guardando los dos que menor distancia tienen entre sí. Esta solución tiene un crecimiento asintótico de $O(n^2)$.
 
-	\paragraph{}
-	Tras analizar el problema detenidamente nos damos cuenta de que dados dos puntos A y B, la distancia del punto A al punto B es la misma que del B al A. Por este detalle deducimos que nos podemos ahorrar estas operaciones innecesarias comparando solo una vez los pares entre sí.
-	\paragraph{}
-	Profundizando algo mas en nuestro problema vemos que al ser posiciones, estas se pueden subdividir en subconjuntos mas pequeños y así obviar el análisis de pares que estén muy alejados. Este enfoque es del tipo divide y vencerás. En la siguiente sección expondremos con más profundidad las ventajas de esta solución.
+		\paragraph{}
+		Existen distintos enfoques para resolver este problema. El mas simple pero a la vez menos eficiente de todos se basa en comparar todos los puntos con todos e ir guardando los dos que menor distancia tienen entre sí. Esta solución tiene un crecimiento asintótico de $O(n^2)$.
 
-	\paragraph{Motivos por los que usar divide y vencerás}
+		\paragraph{}
+		Tras analizar el problema detenidamente nos damos cuenta de que dados dos puntos A y B, la distancia del punto A al punto B es la misma que del B al A. Por este detalle deducimos que nos podemos ahorrar estas operaciones innecesarias comparando solo una vez los pares entre sí.
+	
+	
+		\paragraph{}
+		Profundizando algo mas en nuestro problema vemos que al ser posiciones, estas se pueden subdividir en subconjuntos mas pequeños y así obviar el análisis de pares que estén muy alejados. Este enfoque es del tipo divide y vencerás. En la siguiente sección expondremos con más profundidad las ventajas de esta solución.
 
-		\begin{enumerate}
+		\paragraph{Motivos por los que usar divide y vencerás}
 
-			\item
-			Los puntos mas cercanos en el espacio por la propia definición de cercanía van a estar en una región próxima del espacio. Este es el motivo por el cual nos podemos ahorrar comparar dos puntos que están muy alejados entre sí en el espacio.
-			\item
-			Si encontramos un mínimo en un subconjunto del espacio y este lo es también para todos los subconjuntos que contienen a este, entonces habremos encontrado el mínimo de todo el espacio.
+			\begin{enumerate}
 
-		\end{enumerate}
+				\item
+				Los puntos mas cercanos en el espacio por la propia definición de cercanía van a estar en una región próxima del espacio. Este es el motivo por el cual nos podemos ahorrar comparar dos puntos que están muy alejados entre sí en el espacio.
+				
+				\item
+				Si encontramos un mínimo en un subconjunto del espacio y este lo es también para todos los subconjuntos que contienen a este, entonces habremos encontrado el mínimo de todo el espacio.
+
+			\end{enumerate}
 
 \section{Solución implementada (Divide y vencerás)}
 
 	\paragraph{}
-	La solución que se ha escogido es la de realizar particiones binarias en el espacio recursivamente hasta tener subconjuntos de pequeño tamaño (En la implementación propuesta como ejemplo se ha fijado en conjuntos de 10 puntos.) para después compararlos utilizando un algoritmo boraz que nos asegura el mínimo local de cada subconjunto. Lo siguiente es quedarse con el mínimo de las dos particiones binarias y analizar los puntos que se quedaron en la frontera que las divide ya que puede darse el caso de que el par de puntos con distancia mínima contuviese el punto 1 perteneciente a la particion 1 y el punto 2 a la partición 2. Si no se evaluase este caso podría darse el caso de que el mínimo encontrado no fuera el real ya que aunque esté en la frontera de los dos subconjuntos pertenece al espacio.
+	La solución que se ha escogido es la de realizar particiones binarias en el espacio recursivamente hasta tener subconjuntos de pequeño tamaño (En la implementación propuesta como ejemplo se ha fijado en conjuntos de 10 puntos pero teóricamente se debe plantear como conjuntos de 3 elementos, que es el problema de menor tamaño.) para después compararlos utilizando un algoritmo boraz que nos asegura el mínimo local de cada subconjunto. Lo siguiente es quedarse con el mínimo los dos subconjuntos y después analizar los puntos que se encuentran en la frontera que los divide ya que puede darse el caso de que el par de puntos con distancia mínima contuviera el punto 1 perteneciente al primer subconjunto y el punto 2 perteneciente al segundo subconjunto, o viceversa. Si no se evaluase este caso podría darse el caso de que el mínimo encontrado no fuera el real ya que aunque esté en la frontera de los dos subconjuntos pertenece al conjunto que las contiene.
 	
 
 	\paragraph{}
-	Las explicaciones se van a exponer en un espacio de 3 dimensiones pero estas son extrapolables cualquier número de dimensiones.
+	Las explicaciones se van a exponer en un espacio de 3 dimensiones pero estas son extrapolables a cualquier dimensión.
 
-	\subsection{Divide}
+	\subsection{Division}
+		
 		\paragraph{}
-		Lo que intentamos conseguir al dividir el espacio en particiones binarias recursivamente es agrupar los puntos que están más próximos para así intentar prescindir del mayor número de comparaciones innecesarias. Para ello se pueden tomar distintos enfoques:
-
+		Lo que intentamos conseguir al dividir el espacio en subconjuntos de forma recursiva es agrupar los puntos que están más próximos, es decir, que la distancia máxima que se pueda encontrar el subconjunto sea la mínima posible para así prescindir del mayor número de comparaciones posibles. 
+		
+		\paragraph{}
+		Vamos a suponer que nuestro conjunto de puntos no está ordenado por lo que lo primero que haremos será ordenarlo sobre uno de los ejes de coordenadas. Con esto conseguiremos "acercar" sobre dicho eje los puntos mas cercanos en el conjunto de punto.
+		
+		\paragraph{}
+		Una vez tenemos ordenado el conjunto se pueden tomar distintos enfoques a la hora de particionarlo:
+		
 		\begin{itemize}
 
 			\item
-			El primero de ellos consiste en hacer la partición siempre en la misma dimensión. Este enfoque tiene la ventaja de que tan solo hay que ordenar los elementos una vez, ya que al no tener que cambiar de dimensión la ordenación se mantiene. Pero aún así esto es menos eficiente ya que no se consigue la meta deseada que era agrupar los puntos cercanos en conjuntos. En este caso al solo depender de una de las dimensiones en las otras pueden tener valores muy diferentes por lo que al producirse la fusión se tienen que evaluar muchos más puntos. Esto se ilustra en la figura \ref{same_dim}.
+			El primero de ellos consiste en dividir el conjunto en cada nivel de recursión siempre sobre el mismo eje de coordenadas. Este enfoque tiene la ventaja de que no tendremos que volver a reordenar el conjunto, ya que la ordenación se mantiene. Pero aún así no se consigue la meta deseada que era agrupar lo máximo posible los puntos más cercanos en subconjuntos. Otra de las desventajas es que al solo depender de un eje de coordenadas en los otros pueden tener valores muy alejados (El problema se empeora cuanto mayor es la dimensión del espacio) por lo que al producirse la fusión se evaluarán muchos más puntos. Esto se ilustra en la figura \ref{same_dim}.
 
 			\item
-			La segunda solución consiste en que en cada nivel de recursión se cambie la dimensión en la que se particionan los puntos, lo que conlleva a una reordenación de los mismos respecto a dicha dimensión. La carga de trabajo en este caso es mayor pero la división que se consigue es mucho más homogénea en cuanto a distancia lo que nos da una gran ventaja al fusionar los distintos subconjuntos. Esto se ilustra en la figura \ref{different_dim}.
+			La segunda solución consiste en que en cada nivel de recursión se cambie el eje de coordenadas en que se particionan los puntos, lo que conlleva una reordenación de los mismos respecto de dicho eje. La carga de trabajo en este caso es mayor pero la división que se consigue es mucho más homogénea en cuanto a distancia lo que nos ofrece una gran ventaja al combinar los subconjuntos en la siguiente fase del algoritmo. Esto se ilustra en la figura \ref{different_dim}.
 
 		\end{itemize}
+		
+		\paragraph{Nota:}
+		Las figuras corresponden a cómo se particiona el espacio en los 3 primeros niveles de recursión.
 
 
 
 	\begin{figure}[ht!]
 		\centering
-		\includegraphics[width=60mm]{cube_division_1.jpg}
+		\includegraphics[width=90mm]{cube_division_1.jpg}
 		\caption{Particionamiento en la misma dimensión \label{same_dim}}
 	\end{figure}
 
 	\begin{figure}[ht!]
 		\centering
-		\includegraphics[width=60mm]{cube_division_2.jpg}
+		\includegraphics[width=90mm]{cube_division_2.jpg}
 		\caption{Particionamiento en distintas dimensiones \label{different_dim}}
 	\end{figure}
 
 
-	\subsection{Vencerás}
+	\subsection{Combinacion}
 		\paragraph{}
-		Esta parte de nuestra solución corresponde a la combinación de los resultados obtenidos al dividir el subproblema. En lo que se basa es en encontrar cual de las particiones en las que se ha dividido el conjunto de puntos es la que tiene el par con distancia mínima y a la vez estudiar el espacio frontera, ya que hasta ahora no habíamos tenido en cuenta los pares de puntos que están uno en el primer subconjunto y otro en el segundo subconjunto.
+		Esta parte corresponde a la combinación de los resultados obtenidos al dividir el subproblema. En lo que se basa es en encontrar cual de los subconjuntos en los que se ha dividido el conjunto de puntos es el que tiene el par con distancia mínima y a la vez evaluar los puntos que están en la frontera entre los subconjuntos, ya que hasta ahora no habíamos tenido en cuenta los pares de puntos que están uno en el primer subconjunto y otro en el segundo subconjunto.
+		
 		\subsubsection{Encontrar el minimo}
 
 			\paragraph{}
@@ -101,9 +135,11 @@
 		\subsubsection{Analizar los pares en el punto intermedio}
 
 			\paragraph{}
-			Para facilitar el entendimiento del problema lo ilustraremos con la figura \ref{example_border} que corresponde a un ejemplo en 2 dimensiones. Una vez obtenida la distancia minima en el paso anterior tendremos que estudiar los pares de puntos que cumplan la condición de que uno de ellos esté en un subconjunto y otro en el otro subconjunto.
+			Para facilitar el entendimiento del problema lo ilustraremos con la figura \ref{example_border} que corresponde a un ejemplo en 2 dimensiones. Una vez obtenida la distancia minima de los dos subconjuntos en el paso anterior tendremos que estudiar los pares de puntos que cumplen la condición de que uno de ellos esté en el primer subconjunto y otro en el segundo subconjunto.
+			
 			\paragraph{}
-			Ahora deberemos seleccionar el punto mas proximo del primer subconjunto e ir examinando si la distancia a los puntos del segundo subconjunto es menor que la distancia minima de los dos subconjuntos y si es así añadirle a los puntos que analizaremos ahora. También habrá que hacer lo mismo pero con los puntos del primer subconjunto. Como teníamos los puntos ordenados llegamos a la conclusión de que en cuanto haya un punto que no cumpla la condición todos los siguientes puntos de ese subconjunto ya no la cumplirán, por lo que podemos ahorrarnos también esos cálculos.
+			Ahora deberemos seleccionar el punto más próximo del primer subconjunto respecto del segundo y examinar si la distancia a los puntos del segundo subconjunto es menor que la distancia minima de los dos subconjuntos  que acabamos de calcular en el paso anterior y si es así añadirle al subconjunto de puntos que analizaremos ahora. También habrá que hacer lo mismo pero con los puntos del primer subconjunto (Seleccionar el punto mas próximo del segundo subconjunto respecto del primero y seleccionar los puntos del primero que cumplan la condición antes señalada). Como teníamos los puntos ordenados llegamos a la conclusión de que en cuanto haya un punto que no cumpla la condición todos los siguientes puntos de ese subconjunto ya no la cumplirán, por lo que podemos ahorrarnos también esos cálculos.
+			
 			\paragraph{}
 			Finalmente obtendremos el mínimo del subconjunto que acabamos de generar y lo compararemos con el mínimo anteriormente obtenido para así encontrar el mínimo global del conjunto.
 
@@ -128,11 +164,11 @@
 
 			\begin{algorithmic}[1] % The number tells where the line numbering should start
 
-			\Procedure{closestPair}{$PLIST (ListaDePuntos), actDim (DimensionActual), dim (DimensionesTotales)$} 
+			\Procedure{closestPair}{$P (ListaDePuntos), actDim (DimensionActual), dim (DimensionesTotales)$} 
 			
 				\If{$len(P) < 3$}
 					
-					\State \textbf{return}  $borazPair(PLIST)$
+					\State \textbf{return}  $borazPair(P)$
 
 				\Else
 					
@@ -226,7 +262,7 @@
 	$T(n,d) = 2T(n/2,d) + U(n,d - 1) + O(n) = 2T (n/2, d) + O(n(log n)d-2) + O(n) = O(n(log n)d -1)$
 
 	\paragraph{Aclaración:}
-	La solución implementada y aquí explicada no es la óptima, ya que esta tiene un crecimiento asintótico de $O(n(log(n)^d-1)$ donde $d = $ dimension del espacio, que a pesar de ser mejor que $O(n^2)$ es mejorable. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
+	La solución implementada y aquí explicada no es la óptima para dimensiones superiores a 2, ya que esta tiene un crecimiento asintótico de $O(n(log(n)^d-1)$ donde $d = $ dimension del espacio. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
 		
 \section{Solución Óptima}
 	\paragraph{}
@@ -237,8 +273,7 @@
 \section{Referencias}
 
 	\begin{itemize}
-		\item
-		....
+		\item \url{https://es.wikipedia.org/wiki/Algoritmo_divide_y_venceras}	
 	\end{itemize}
 
 

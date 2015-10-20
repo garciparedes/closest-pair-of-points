@@ -20,9 +20,10 @@ from mpl_toolkits.mplot3d import Axes3D
 def main():
     multidim()
 
-
+    '''
     space = Space.generateSpace(10000,3,10**(-10))
     print space
+
 
     fig = pylab.figure()
     ax = Axes3D(fig)
@@ -40,18 +41,22 @@ def main():
     ax.scatter(closestPair.pointA.vector[0], closestPair.pointA.vector[1], closestPair.pointA.vector[2], c= 'r', s= 30)
     ax.scatter(closestPair.pointB.vector[0], closestPair.pointB.vector[1], closestPair.pointB.vector[2], c= 'r', s= 30)
     pyplot.show()
-
+    '''
 
 
 
 
 def multidim():
-    space2 = Space.generateSpace(10000,7,10**(-25))
-    print space2
+    for i in range(100):
+        space2 = Space.generateSpace(100,100,10**(-198))
+        #space2 = Space.generateSpace(10000,3,10**(-10))
 
+        #print space2
 
-    closestPair = closestPairBrutePlus(space2)
-    closestPair = closestPairDivide(space2)
+        closestPair = closestPairBrutePlus(space2)
+        closestPair = closestPairDivide(space2)
+        print "\n\n\n"
+
 
 
 def closestPairBrutePlus(space):
