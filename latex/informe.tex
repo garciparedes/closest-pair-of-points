@@ -122,42 +122,95 @@
 		% Insert the algorithm
 		\begin{algorithm}
 
-			\caption{Euclid’s algorithm}
+			\caption{Closest Pair algorithm}
 
 			\label{euclid}
 
 			\begin{algorithmic}[1] % The number tells where the line numbering should start
 
-			\Procedure{CLOSESTPAIR}{$PLIST, i, dim$} 
-				\If{$len(PLIST)>10$}
-					\State $i\gets(i+1) \bmod dim$
-					\State $PLIST \gets sort(i, PLIST)$
-					\State $leftPLIST \gets PLIST[:len(PLIST)/2]$
-					\State $rightPLIST \gets PLIST[len(PLIST)/2:]$
-					\State $leftCPAIR \gets CLOSESTPAIR(leftPLIST, i, dim)$
-					\State $rightCPAIR \gets CLOSESTPAIR(rightPLIST, i, dim)$
-					\State $CPAIR \gets min(leftCPAIR, righCPAIR)$
-					\State $distance \gets CPAIR.distance()$
-					\State $borderPLIST \gets closePLIST(distance, leftPLIST, rightPLIST)$
-					\State $borderCPAIR \gets CLOSESTPAIR(borderPLIST, i , dim)$
-					\State $CPAIR \gets min(CPAIR, borderCPAIR)$
+			\Procedure{closestPair}{$PLIST, i, dim$} 
+				\If{$len(PLIST) < 3$}
+					
+					\State \textbf{return}  $borazPair(PLIST)$
+
 				\Else
-					\State $CPAIR \gets borazPair(PLIST)$
+					
+					\State $i\gets(i+1) \bmod dim$
+					
+					\State $PLIST \gets sort(i, PLIST)$
+					
+					\State $LPLIST \gets PLIST[:len(PLIST)/2]$
+					
+					\State $RPLIST \gets PLIST[len(PLIST)/2:]$
+					
+					\State $leftCPAIR \gets closestPair(LPLIST, i, dim)$
+					
+					\State $rightCPAIR \gets closestPair(RPLIST, i, dim)$
+					
+					\State $CPAIR \gets min(leftCPAIR, righCPAIR)$
+					
+					\State $d \gets CPAIR.distance()$
+					
+					\State $MPLIST \gets closePLIST(d, LPLIST, RPLIST)$
+					
+					\State $MPAIR \gets closestPair(MPLIST, i , dim)$
+					
+					\State \textbf{return} $min(CPAIR, MPAIR)$
+				
 				\EndIf
-				\State \textbf{return} $CPAIR$
+			
 			\EndProcedure
 
 			\end{algorithmic}
 
 		\end{algorithm}
+		
+		
+		\begin{algorithm}
+
+			\caption{closePLIST}
+
+			\label{closePLIST}
+
+			\begin{algorithmic}[1] % The number tells where the line numbering should start
+
+			\Procedure{closePLIST}{$PLIST, i, dim$} 
+				\If{$len(PLIST) < 3$}
+					
+					\State \textbf{return}  $borazPair(PLIST)$
+
+				\Else
+					
+									
+				\EndIf
+			
+			\EndProcedure
+
+			\end{algorithmic}
+
+		\end{algorithm}
+
 	\subsection{Análisis de crecimiento}
+	
+	$U (n, d) = 2U (n/2, d) + U (n, d - 1) + O(n) = O(n(log n)d -1 $
+	
+	$T(n,d) = 2T(n/2,d) + U(n,d - 1) + O(n) = 2T (n/2, d) + O(n(log n)d-2) + O(n) = O(n(log n)d -1)$
 
 	\paragraph{Aclaración:}
-	La solución implementada y aquí explicada no es la óptima, ya que esta tiene un crecimiento asintótico de $O(n(log(n)^d)$ donde $d = $ dimension del espacio. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
+	La solución implementada y aquí explicada no es la óptima, ya que esta tiene un crecimiento asintótico de $O(n(log(n)^d-1)$ donde $d = $ dimension del espacio, que a pesar de ser mejor que $O(n^2)$ es mejorable. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
 		
 \section{Solución Óptima}
 	\paragraph{}
-	La solución óptima al problema de encontrar el par de puntos más cercano en un espacio n-dimensional consiste en ordenar los puntos en todas las dimensiones antes de comenzar el algoritmo divide y vencerás. Con este enfoque tendremos un crecimiento asintótico de $O(nlogn)$
+	La solución óptima al problema de encontrar el par de puntos más cercano en un espacio n-dimensional se puede conseguir con un crecimiento asintótico de $O(nlogn)$, es decir, sin que dependa la dimensión en el crecimiento. Esto se consigue mediante la utilización de hiperplanos, que nos dan la ventaja de poder reducir la dimensión del espacio. Con este método se llega a la siguiente ecuación de recurrencia:
+	$T(n, d) = 2T(n/2, d) + U(m, d - 1) + O(n)$ donde $U(m, d-1)=O(m (logm) d - 2) = O(n)$
+	Simplificando llegamos a $T(n,d)=2T(n/2,d)+O(n)+O(n)$ que se resuelve en $O(nlogn)$ 
+
+\section{Referencias}
+
+	\begin{itemize}
+		\item
+		Hola				
+	\end{itemize}
 
 
 \end{document}
