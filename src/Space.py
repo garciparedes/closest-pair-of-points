@@ -194,6 +194,14 @@ class Space(object):
 
 
     def divide(self, initPointList, i):
+        '''
+        Funcion que divide el espacio en 2 y evalua cada una
+        de ellas para encontrar el minimo.
+        En el caso de que el conjunto de puntos sea menor o igual
+        que 10 se utiliza el algoritmo por fuerza bruta.
+        Tambien se evalua el conjunto de puntos que se encuentra en
+        la mitad de las dos particiones llamando al metodo conquer()
+        '''
 
         if (len(initPointList) > 10):
             i = (i+1) % self.dimension
@@ -218,6 +226,11 @@ class Space(object):
 
 
     def conquer(self, initPointList, closestPair, i):
+        '''
+        Funcion encargada de evaluar los puntos en la frontera de
+        las 2 particiones, examina los puntos que estan a una distancia
+        menor que la resta del punto mas cercano al borde de la otra partcion
+        '''
 
         distance = math.ceil(closestPair.distance())
 
