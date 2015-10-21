@@ -9,6 +9,9 @@
 
 \usepackage{hyperref}
 
+\usepackage{float}
+
+
 
 \title{Algoritmo: Buscar el par de puntos mas cercano en espacio n-dimensional}
 \author{Sergio García Prado}
@@ -110,13 +113,13 @@
 
 
 
-	\begin{figure}[ht!]
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=90mm]{cube_division_1.jpg}
 		\caption{Particionamiento en la misma dimensión \label{same_dim}}
 	\end{figure}
 
-	\begin{figure}[ht!]
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=90mm]{cube_division_2.jpg}
 		\caption{Particionamiento en distintas dimensiones \label{different_dim}}
@@ -140,23 +143,24 @@
 			\paragraph{}
 			Ahora deberemos seleccionar el punto más próximo del primer subconjunto respecto del segundo y examinar si la distancia a los puntos del segundo subconjunto es menor que la distancia minima de los dos subconjuntos  que acabamos de calcular en el paso anterior y si es así añadirle al subconjunto de puntos que analizaremos ahora. También habrá que hacer lo mismo pero con los puntos del primer subconjunto (Seleccionar el punto mas próximo del segundo subconjunto respecto del primero y seleccionar los puntos del primero que cumplan la condición antes señalada). Como teníamos los puntos ordenados llegamos a la conclusión de que en cuanto haya un punto que no cumpla la condición todos los siguientes puntos de ese subconjunto ya no la cumplirán, por lo que podemos ahorrarnos también esos cálculos.
 			
-			\paragraph{}
-			Finalmente obtendremos el mínimo del subconjunto que acabamos de generar y lo compararemos con el mínimo anteriormente obtenido para así encontrar el mínimo global del conjunto.
-
-			\begin{figure}[ht!]
+			\begin{figure}[H]
 				\centering
 				\includegraphics[width=60mm]{strip_closesr1.png}
 				\caption{Particionamiento en distintas dimensiones \label{example_border}}
 			\end{figure}
+			
+			\paragraph{}
+			Seguidamente, si el subconjunto que acabamos de  definir (el formado por los puntos que están en la frontera de los dos subconjuntos y tienen posibilidad de formar el mínimo) será evaluado aplicando el mismo enfoque se está planteando para solucionar el problema global.
 
+			\paragraph{}
+			Una vez obtenido el par con distancia mínima en la zona de la frontera de los dos subconjuntos, es decir, que cumple la condición de que uno de los puntos pertenece a un subconjunto y el otro al otro, se compara con el de los otros otros dos subconjuntos y se selecciona el menor de ellos, que es el mínimo del conjunto.
 
 	\paragraph{}
-	Realizando esta operación con cada uno de los subconjuntos, es decir, de forma recursiva,  obtendremos el mínimo global de todo el espacio ahorrándonos un gran número de operaciones innecesarias lo que conlleva una gran mejora de eficiencia y obteniendo una solución con un crecimiento asintótico de $O(nlog(n))$.
-
+	Realizando esta operación recursivamente con cada uno de los subconjuntos en los que se va dividiendo el conjunto global en cada nivel de recursión obtendremos el mínimo global de todo el espacio ahorrándonos un gran número de operaciones innecesarias, lo que conlleva una gran mejora de eficiencia.	
 
 	\subsection{Pseudocódigo}
 		% Insert the algorithm
-		\begin{algorithm}
+		\begin{algorithm}[H]
 
 			\caption{Closest Pair algorithm}
 
@@ -216,7 +220,7 @@
 		\end{algorithm}
 		
 		
-		\begin{algorithm}
+		\begin{algorithm}[H]
 
 			\caption{closestMidle}
 
@@ -261,8 +265,19 @@
 	
 	$T(n,d) = 2T(n/2,d) + U(n,d - 1) + O(n) = 2T (n/2, d) + O(n(log n)d-2) + O(n) = O(n(log n)d -1)$
 
-	\paragraph{Aclaración:}
-	La solución implementada y aquí explicada no es la óptima para dimensiones superiores a 2, ya que esta tiene un crecimiento asintótico de $O(n(log(n)^d-1)$ donde $d = $ dimension del espacio. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
+	\subsection{Desventajas de esta solución}
+
+		\paragraph{}
+		Con esta estrategia conseguimos concentrar los puntos en subconjuntos respecto de un eje de coordenadas cada vez, lo que nos proporciona cercanía "real" entre los puntos de cada subconjunto en el caso de trabajar con dimensiones pequeñas.
+		
+		\paragraph{}
+		La causa de esto se debe a que el valor de la posición se "concentra" en pocos valores (3 en el caso de 3 dimensiones) por lo que podemos acotar mejor la situación del punto fijándonos en uno de ellos. Burdamente hablando controlamos $1/3$ del punto. Mientras que si estamos estudiando puntos de dimensión 100 en cuyo caso tendriamos 100 valores por cada punto burdamente hablando tan solo controlamos la posición del punto en $1/100$
+		
+		\paragraph{}
+		El cuello de botella de esta solución se encuentra en la fase de selección de los puntos que se encuentran en la frontera entre los dos subconjuntos en los que se divide el problema y se acentúa gravemente cuando la dimension del espacio toma valores elevados.
+		
+		\paragraph{Aclaración:}
+		La solución implementada y aquí explicada no es la óptima para dimensiones superiores a 2, ya que esta tiene un crecimiento asintótico de $O(n(log(n)^d-1)$ donde $d = $ dimension del espacio. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
 		
 \section{Solución Óptima}
 	\paragraph{}
@@ -270,10 +285,23 @@
 	$T(n, d) = 2T(n/2, d) + U(m, d - 1) + O(n)$ donde $U(m, d-1)=O(m (logm) d - 2) = O(n)$
 	Simplificando llegamos a $T(n,d)=2T(n/2,d)+O(n)+O(n)$ que se resuelve en $O(nlogn)$ 
 
-\section{Referencias}
+\section{Bibliografía}
 
 	\begin{itemize}
 		\item \url{https://es.wikipedia.org/wiki/Algoritmo_divide_y_venceras}	
+		
+		\item \url{https://www.cs.ucsb.edu/~suri/cs235/ClosestPair.pdf}	
+		
+		\item \url{https://en.wikipedia.org/wiki/Closest_pair_of_points_problem}
+		
+		\item \url{https://people.csail.mit.edu/indyk/ohad.ps}
+		
+		\item \url{http://www.geeksforgeeks.org/closest-pair-of-points/}	
+		
+		\item \url{https://people.csail.mit.edu/indyk/6.838-old/handouts/lec17.pdf}	
+		
+		\item \url{https://courses.cs.washington.edu/courses/cse421/11su/slides/05dc.pdf}
+		
 	\end{itemize}
 
 
