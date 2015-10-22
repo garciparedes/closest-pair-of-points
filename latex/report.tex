@@ -11,6 +11,8 @@
 
 \usepackage{float}
 
+\delimitershortfall-1sp
+\newcommand\abs[1]{\left|#1\right|}
 
 
 \title{Algoritmo: Buscar el par de puntos mas cercano en espacio n-dimensional}
@@ -163,7 +165,7 @@
 
 	\paragraph{}
 	Realizando esta operación recursivamente con cada uno de los subconjuntos en los que se va dividiendo el conjunto global en cada nivel de recursión obtendremos el mínimo global de todo el espacio ahorrándonos un gran número de operaciones innecesarias, lo que conlleva una gran mejora de eficiencia.	
-
+	
 	\subsection{Pseudocódigo}
 		% Insert the algorithm
 		\begin{algorithm}[H]
@@ -174,49 +176,52 @@
 
 			\begin{algorithmic}[1] % The number tells where the line numbering should start
 
-			\Procedure{closestPair}{$P (ListaDePuntos), actDim (DimensionActual), dim (DimensionesTotales)$} 
+			\Procedure{closestPair}{$P, actDim, dim$} 
+				\State $P:$ Conjunto de puntos
+				\State $actDim:$ Dimension actual
+				\State $dim:$ Número de dimensiones del espacio.
+				\State
 			
 				\If{$len(P) < 3$}
 					
-					\State \textbf{return}  $borazPair(P)$
-
+					\State \textbf{return}  $bruteForcePair(P)$ 
+					\Comment{T(n) = O(1)}
 				\Else
 					
-					\State $actDim\gets(actDim+1) \bmod dim$ 	\Comment{T(n) = O(1).}
-					
-					\State
-
-					
+					\State $actDim\gets(actDim+1) \bmod dim$ 	
+					\Comment{T(n) = O(1)}					
 					\State $P \gets sort(i, P)$
-					\Comment{T(n,d) = O(nlogn).}
+					\Comment{T(n) = O(nlogn)}
 					
 					\State
 					
 					\State $LP \gets P[:len(P)/2]$
-					\Comment{T(n,d) = O(1).}
+					\Comment{T(n) = O(1)}
 					
 					\State $RP \gets P[len(P)/2:]$
-					\Comment{T(n,d) = O(1).}
+					\Comment{T(n) = O(1)}
 					
 					\State
 					
 					\State $LPair \gets closestPair(LP, actDim, dim)$
-					\Comment{T(n,d) = T(n/2, d).}
+					\Comment{T(n) = T(n/2)}
 					
 					\State $RPair \gets closestPair(RP, actDim, dim)$
-					\Comment{T(n,d) = T(n/2, d).}
+					\Comment{T(n) = T(n/2)}
 					
 					\State $LRPair \gets min(LPair, RPair)$
-					\Comment{T(n,d) = O(1).}
+					\Comment{T(n) = O(1)}
 					
 					\State
 					
 					\State $MPair \gets closestMidle(LRPair, LP, RP, actDim, dim)$
-					\Comment{T(n,d) = U(n, d-1).}
+					\Comment{T(n) = U(n)}
 					
 					\State
 
 					\State \textbf{return} $min(MPair, LRPair)$
+					\Comment{T(n) = O(1)}
+	
 				\EndIf
 			
 			\EndProcedure
@@ -235,28 +240,35 @@
 			\begin{algorithmic}[1] % The number tells where the line numbering should start
 
 			\Procedure{closestMidle}{$LRPair, LP, RP, actDim, dim$} 
+				\State $LRPair:$ Par mínimo encontrado de los dos subconjuntos
+				\State $LP:$ Primer subconjunto de puntos
+				\State $RP:$ Segundo subconjunto de puntos
+				\State $actDim:$ Dimension actual
+				\State $dim:$ Número de dimensiones del espacio.
+				\State
+
 			
-				\State $distance \gets LRPair.distance()$
-				\Comment{T(n, d) = O(1).}
+				\State $d \gets LRPair.distance()$
+				\Comment{T(n) = O(1)}
 
 				\State $LBorderPoint \gets RP[0]$
-				\Comment{T(n, d) = O(1).}
+				\Comment{T(n) = O(1)}
 
 				\State $RBorderPoint \gets LP[-1]$
-				\Comment{T(n, d) = O(1).}
+				\Comment{T(n) = O(1)}
 
 				\State
 				
-				\State $MP \gets points/  point[actDim]-LBorderPoint[actDim] < distance \in RP$
-				\Comment{T(n, d) = O(n).}
+				\State $MP \gets points: d > \abs{LBorderPoint[actDim] - point[actDim]} \in RP$
+				\Comment{T(n) = O(n)}
 
-				\State $MP \gets MP \cup points/  point[actDim]-RBorderPoint[actDim] < distance \in LP$
-				\Comment{T(n, d) = O(n).}
+				\State $MP \gets MP \cup points:  d > \abs{RBorderPoint[actDim] - point[actDim]} \in LP$
+				\Comment{T(n) = O(n)}
 
 				\State	
 								
 				\State \textbf{return} $closestPair(MP, actDim, dim)$
-				\Comment{T(n) = T(n/2, d).}
+				\Comment{T(n) = T(n/k)}
 
 
 			\EndProcedure
@@ -267,11 +279,32 @@
 
 	\subsection{Análisis de crecimiento}
 	
-	$U (n, d) = 2U (n/2, d) + U (n, d - 1) + O(n) = O(n(log n)d -1 $
+		\paragraph{}
+		Las ecuaciones de recurrencia de la primera función y segunda funciones respectivamente son:
 	
-	$T(n,d) = 2T(n/2,d) + U(n,d - 1) + O(n) = 2T (n/2, d) + O(n(log n)d-2) + O(n) = O(n(log n)d -1)$
+		\begin{equation}
+		T(n) =  2T(n/2) + U(n) + O(nlogn)
+		\end{equation}
+		
+		\begin{equation}
+		U(n) = T(n/k) + 2O(n)
+		\end{equation}
 
+		\paragraph{}
+		La variable $k$ hace referencia a la cantidad de puntos que se han descartado del análisis por estar mas alejados de un punto del otro subconjunto que la distancia del mñinimo par encontrado en los subconjuntos. Esta variable toma valores en el intervalo $(1, +\infty)$ tendiendo a $+\infty$ si estamos estudiando un espacio de dimensiones pequeñas y tendiendo a valores cercanos a 1 si nuestra espacio tiene una dimensión muy grande. Aplicando el teorema maestro sobre la primera y la segunda ecuaciones de recurrencia obtenemos:
+		
+		\begin{equation}
+			U(n) = O(logn)
+		\end{equation}
+		
+		\begin{equation}
+			T(n) = 2T(n/2) +  O(logn) + O(nlogn) = 2T(n/2) + O(nlogn) = O(nlogn)
+		\end{equation}
+		
+		Pero este resultado no está del todo ajustado, ya que en los cálculos no apararece la dimensión, que como hemos dicho influye en el crecimiento asintótico. Gracias a la información obtenida a partir de la bibliografía (concretamente al segundo enlace que aparece en el listado de referencia bibliográfica.) se llega a la conclusión de que $O(nlogn^{d-1})$ es una mejor aproximación.
+		
 	\subsection{Desventajas de esta solución}
+	
 
 		\paragraph{}
 		Con esta estrategia conseguimos concentrar los puntos en subconjuntos respecto de un eje de coordenadas cada vez, lo que nos proporciona cercanía "real" entre los puntos de cada subconjunto en el caso de trabajar con dimensiones pequeñas.
@@ -283,15 +316,14 @@
 		El cuello de botella de esta solución se encuentra en la fase de selección de los puntos que se encuentran en la frontera entre los dos subconjuntos en los que se divide el problema y se acentúa gravemente cuando la dimension del espacio toma valores elevados.
 		
 		\paragraph{Aclaración:}
-		La solución implementada y aquí explicada no es la óptima para dimensiones superiores a 2, ya que esta tiene un crecimiento asintótico de $O(n(log(n)^d-1)$ donde $d = $ dimension del espacio. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
+		La solución implementada y aquí explicada no es la óptima para dimensiones superiores a 2, ya que esta tiene un crecimiento asintótico de $O(nlogn^{d-1})$ donde $d = $ dimension del espacio. La solución expuesta en el apartado siguiente tiene un mejor crecimiento asintótico.
 		
 \section{Solución Óptima}
 	\paragraph{}
 	La solución óptima al problema de encontrar el par de puntos más cercano en un espacio n-dimensional se puede conseguir con un crecimiento asintótico de $O(nlogn)$, es decir, sin que dependa la dimensión en el crecimiento. Esto se consigue mediante la utilización de hiperplanos, que nos dan la ventaja de poder reducir la dimensión del espacio. Con este método se llega a la siguiente ecuación de recurrencia:
-	$T(n, d) = 2T(n/2, d) + U(m, d - 1) + O(n)$ donde $U(m, d-1)=O(m (logm) d - 2) = O(n)$
-	Simplificando llegamos a $T(n,d)=2T(n/2,d)+O(n)+O(n)$ que se resuelve en $O(nlogn)$ 
+	$T(n, d) = 2T(n/2, d) + U(m, d - 1) + O(n)$ donde $U(m, d-1)=O(m (logm) d - 2) = O(n)$. Simplificando llegamos a $T(n,d)=2T(n/2,d)+O(n)+O(n)$ que se resuelve en $O(nlogn)$ 
 
-\section{Bibliografía}
+\section{Referencia Bibliográfica}
 
 	\begin{itemize}
 		\item \url{https://es.wikipedia.org/wiki/Algoritmo_divide_y_venceras}	

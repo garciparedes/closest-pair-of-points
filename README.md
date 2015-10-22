@@ -2,7 +2,7 @@
 
 Classwork of Algorithms and Computation of degree in Computer Engineering (University of Valladolid).
 
-Consist on study the closest pair problem and do a sample implementation.
+The project involves the study of the closest pair problem and a sample implementation.
 
 [Report](latex/report.pdf)
 
