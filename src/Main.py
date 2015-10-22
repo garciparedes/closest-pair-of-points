@@ -18,9 +18,15 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 def main():
-    multidim()
+    highdimsample()
 
-    '''
+    try:
+        graphicsample()
+    except:
+        print "Para ejecutar el ejemplo grafico debe instalar la libreria matplotlib."
+
+
+def graphicsample():
     space = Space.generateSpace(10000,3,10**(-10))
     print space
 
@@ -41,21 +47,16 @@ def main():
     ax.scatter(closestPair.pointA.vector[0], closestPair.pointA.vector[1], closestPair.pointA.vector[2], c= 'r', s= 30)
     ax.scatter(closestPair.pointB.vector[0], closestPair.pointB.vector[1], closestPair.pointB.vector[2], c= 'r', s= 30)
     pyplot.show()
-    '''
 
 
 
+def highdimsample():
+    space2 = Space.generateSpace(1000,7,10**(-17))
 
-def multidim():
-    for i in range(100):
-        space2 = Space.generateSpace(100,100,10**(-198))
-        #space2 = Space.generateSpace(10000,3,10**(-10))
+    print space2
 
-        #print space2
-
-        closestPair = closestPairBrutePlus(space2)
-        closestPair = closestPairDivide(space2)
-        print "\n\n\n"
+    closestPair = closestPairDivide(space2)
+    print "\n\n\n"
 
 
 
@@ -65,7 +66,6 @@ def closestPairBrutePlus(space):
     time2 = time.time()
 
     print "Fuerza Bruta: "
-    print 'function took %0.3f s' % ( (time2-time1))
     print lista
     return lista
 
@@ -75,7 +75,6 @@ def closestPairDivide(space):
     time2 = time.time()
 
     print "Divide y venceras: "
-    print 'function took %0.3f s' % ( (time2-time1))
     print lista
     return lista
 
